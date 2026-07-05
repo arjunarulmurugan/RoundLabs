@@ -1,112 +1,45 @@
-# Hackathon Project
+## gstack (REQUIRED — global install)
 
-## What this is
+**Before doing ANY work, verify gstack is installed:**
 
-TBD — likely a website, stack not yet chosen. Update this section as soon as the
-idea and stack are locked in; until then, treat everything below as the
-tooling baseline, not a description of the app.
+```bash
+test -d ~/.claude/skills/gstack/bin && echo "GSTACK_OK" || echo "GSTACK_MISSING"
+```
 
-## Hackathon requirement: gstack + gbrain are primary
+If GSTACK_MISSING: STOP. Do not proceed. Tell the user:
 
-This hackathon requires demonstrable, heavy use of **gstack** (the skill
-suite: `/spec`, `/plan`, `/qa`, `/review`, `/ship`, `/browse`,
-`/investigate`, `/office-hours`, `/context-save`, etc.) and **gbrain**
-(persistent memory/search). Treat them as the main interface for doing
-work in this repo, not optional extras:
+> gstack is required for all AI-assisted work in this repo.
+> Install it:
+> ```bash
+> git clone --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack
+> cd ~/.claude/skills/gstack && ./setup --team
+> ```
+> Then restart your AI coding tool.
 
-- Default to a gstack skill over an ad-hoc approach whenever one exists for
-  the task (see the routing list below).
-- Prefer `gbrain search "<terms>"` / `gbrain query "<question>"` over Grep
-  once there's code to index — see the Search Guidance block below.
-- Log durable decisions (architecture, scope, tool choices, reversals) with
-  `gstack-decision-log` as they're made, not just at the end — judges/teammates
-  should be able to see the "why" trail in gbrain, not just the final diff.
-- Checkpoint with `/context-save` at real milestones so progress is
-  recoverable through gbrain artifacts, not just git history.
+Do not skip skills, ignore gstack errors, or work around missing gstack.
 
-ECC rules, ponytail, and ui-ux-pro-max (below) are supporting layers that
-operate *underneath* this gstack/gbrain-driven workflow — they shape how
-code and design decisions get made once gstack has framed what to build.
-
-## Toolchain
-
-- **gstack skills (primary)** — `/office-hours` or `/spec` to shape an idea,
-  `/plan` or `/plan-eng-review` to lock architecture, `/investigate` for
-  bugs, `/qa` or `/browse` to test the real app, `/review` for a diff/PR,
-  `/ship` to land and deploy, `/context-save` / `/context-restore` to
-  checkpoint and resume.
-- **gbrain (primary)** — persistent project memory and semantic search,
-  registered as an MCP server (`gbrain` — see GBrain Configuration below).
-  Search it before grepping; log decisions into it as you go.
-- **ECC rules** (`.claude/rules/ecc/`) — vendored copies of `common`, `web`,
-  `typescript`, and `react` from the ECC plugin, so every contributor's Claude
-  Code follows the same conventions regardless of their own global config.
-  If the stack turns out not to be TypeScript/React, swap the language
-  directory (e.g. `~/.claude/rules/ecc/python`) for the right one and delete
-  the unused ones — see `.claude/rules/ecc/README.md`.
-- **ponytail** — a minimalism discipline applied while writing code: before
-  adding anything, check in order — does this need to exist? is it already in
-  the codebase? does stdlib do it? does the platform do it natively? is it an
-  installed dependency? can it be one line? Only write more once every rung
-  above is exhausted. Install once (global, not project-scoped):
-  `/plugin marketplace add DietrichGebert/ponytail` then
-  `/plugin install ponytail@ponytail` (two separate prompts).
-- **ui-ux-pro-max** (`.claude/skills/ui-ux-pro-max/` + `design`,
-  `design-system`, `ui-styling`, `brand`, `banner-design`, `slides`) —
-  design intelligence: styles, color palettes, font pairings, chart types,
-  and per-stack UX guidelines. Auto-triggers on anything UI/UX-shaped
-  (building pages, components, choosing a color/type system, reviewing
-  visual/accessibility quality) — no need to invoke it explicitly. Installed
-  via `npx ui-ux-pro-max-cli init --ai claude`; run that again in this repo
-  to pull updates.
-
-## Workflow (gstack/gbrain-driven)
-
-1. `/office-hours` or `/spec` — shape and scope the idea before writing code.
-2. `/plan` or `/plan-eng-review` — lock the architecture; log the key calls
-   with `gstack-decision-log` as they're made.
-3. TDD: write the test first (see `.claude/rules/ecc/common/testing.md`),
-   then implement — applying the ponytail minimalism ladder and, for
-   anything visual, ui-ux-pro-max's design guidance.
-4. `/qa` or `/browse` — drive the real app, not just tests.
-5. `/review` (or `/code-review` for local-only changes) before calling
-   anything done.
-6. `/ship` to land and deploy.
-7. `/context-save` at milestones; `/context-restore` when picking work back up.
-
-## Entry point
-
-`.claude/skills/hackathon-build/SKILL.md` wires the above together — it
-triggers automatically on requests like "build the project," "add a
-feature," or "ship this," so you don't need to re-explain the workflow each
-time.
+Using gstack skills: After install, skills like /qa, /ship, /review, /investigate,
+and /browse are available. Use /browse for all web browsing.
+Use ~/.claude/skills/gstack/... for gstack file paths (the global path).
 
 ## GBrain Configuration (configured by /setup-gbrain)
 - Mode: local-stdio
 - Engine: pglite
 - Config file: ~/.gbrain/config.json (mode 0600)
-- Setup date: 2026-07-04
+- Setup date: 2026-07-03
 - MCP registered: yes (user scope)
+- Embeddings: deferred (no API key yet — keyword search only; add a key + `gbrain config set embedding_model <id>` to enable semantic search)
 - Artifacts sync: off
-- Current repo policy: unset (no git remote yet — re-run `/setup-gbrain --repo` once one is added)
+- Current repo policy: unset (no git remote yet)
+- Note: gbrain binary at ~/.bun/bin/gbrain (PATH set in ~/.zprofile)
 
 ## GBrain Search Guidance (configured by /sync-gbrain)
 <!-- gstack-gbrain-search-guidance:start -->
 
-GBrain is set up and synced on this machine. The agent should prefer gbrain
-over Grep when the question is semantic or when you don't know the exact
-identifier yet.
-
-Prefer gbrain when:
-- "Where is X handled?" / semantic intent, no exact string yet:
-    `gbrain search "<terms>"` or `gbrain query "<question>"`
-- "Where is symbol Y defined?" / symbol-based code questions:
-    `gbrain code-def <symbol>` or `gbrain code-refs <symbol>`
-- "What calls Y?" / "What does Y depend on?":
-    `gbrain code-callers <symbol>` / `gbrain code-callees <symbol>`
-
-Grep is still right for known exact strings, regex, multiline patterns, and
-file globs. Run `/sync-gbrain` once this repo has code to index (and again
-after adding a remote, to set the repo trust policy).
+GBrain is set up on this machine (keyword search only until an embedding key
+is added). Prefer `gbrain search "<terms>"` for recalling past plans, retros,
+decisions, and hackathon context. Grep remains right for exact strings, regex,
+and file globs in code. Run /sync-gbrain to index this repo's code.
 
 <!-- gstack-gbrain-search-guidance:end -->
+

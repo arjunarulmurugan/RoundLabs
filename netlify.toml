@@ -1,0 +1,8 @@
+# Netlify build config (used for the Git-connected deploy path).
+# The drag-and-drop path ignores this and just serves the dist/ folder you drop.
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+# Vite base stays "/" on Netlify (served from the domain root) — no VITE_BASE needed.
+# The app uses hash routing, so no SPA redirect rule is required for refresh/deep links.

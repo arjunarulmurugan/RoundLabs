@@ -1,0 +1,52 @@
+# RoundLabs — GitHub Pages deploy (PREPARED, NOT ENABLED).
+#
+# This workflow is checked in but will not run until Arjun:
+#   1. Enables GitHub Pages → Source: GitHub Actions (repo Settings → Pages)
+#   2. Sets the VITE_BASE variable to "/<repo-name>/" (or leaves "/" for a
+#      user/org page) under Settings → Secrets and variables → Actions → Variables
+#   3. Pushes to the default branch
+#
+# Arjun owns remotes, branches, and publication. Claude Code prepared files only.
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch: {}
+  # push trigger intentionally left commented until Arjun opts in:
+  # push:
+  #   branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bunx vitest run
+      - run: bun run build
+        env:
+          VITE_BASE: ${{ vars.VITE_BASE || '/' }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
