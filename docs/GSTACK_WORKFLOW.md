@@ -76,7 +76,7 @@ their **intent** was executed with repository-safe tools and recorded:
 
 | Requested | How it was honoured |
 |---|---|
-| /qa-only | Live browser audit → `docs/CURRENT_UI_AUDIT.md` (12 problems confirmed) |
+| /qa-only | Live browser audit (12 UI/DSI problems confirmed, then fixed) |
 | /office-hours | Question answered in `docs/DIGITAL_CLAY_DESIGN_SYSTEM.md` |
 | /autoplan | Reduction-biased plan in the same design doc (reuse, cut, add small) |
 | /ponytail full | Constraints applied manually (no deps/framework/router/dup pages) |
