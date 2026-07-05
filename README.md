@@ -6,13 +6,13 @@
 
 **One neutral interface material that reshapes itself into the right reasoning tool for the game.**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Open_App-2ea44f?style=for-the-badge)](https://6a4a04216362fde9230b7b7d--zesty-empanada-ec3c85.netlify.app/#/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Open_App-2ea44f?style=for-the-badge)](https://zesty-empanada-ec3c85.netlify.app/#/)
 &nbsp;
 ![Tests](https://img.shields.io/badge/tests-61_passing-3fb950?style=for-the-badge)
 &nbsp;
 ![Build](https://img.shields.io/badge/build-passing-3fb950?style=for-the-badge)
 
-**▶ Live app:** https://6a4a04216362fde9230b7b7d--zesty-empanada-ec3c85.netlify.app/#/
+**▶ Live app:** https://zesty-empanada-ec3c85.netlify.app/#/
 
 </div>
 
@@ -184,7 +184,7 @@ docs/             design system, architecture, provenance, deployment, workflow
 ## 🌐 Deployment
 
 Live on **Netlify**:
-**https://6a4a04216362fde9230b7b7d--zesty-empanada-ec3c85.netlify.app/#/**
+**https://zesty-empanada-ec3c85.netlify.app/#/**
 
 It's a static build, so it deploys anywhere:
 
